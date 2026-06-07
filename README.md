@@ -30,6 +30,17 @@ Visual Learn AI converts educational content into visual learning experiences by
 - Fetching relevant educational images
 - Creating voice narration using Text-to-Speech
 - Combining scenes, images, and audio into a final educational video
+
+  # Screenshots
+
+## Home Page
+![Home Page](proj1.png)
+
+## Upload & Processing
+![Upload](proj3.png)
+
+## Final Video Output
+![Final Video](proj4.png)
 ## Technologies Used
 
 - Python
