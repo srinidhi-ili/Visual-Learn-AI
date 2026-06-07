@@ -41,6 +41,7 @@ Visual Learn AI converts educational content into visual learning experiences by
 
 ## Final Video Output
 ![Final Video](proj4.png)
+
 ## Technologies Used
 
 - Python
