@@ -1,6 +1,6 @@
 # Visual Learn AI
 
-#Inspiration
+## Inspiration
 
 While studying and interacting with students around me, I noticed that many of them struggled to understand long theoretical content from PDFs, PowerPoint presentations, and notes.
 
