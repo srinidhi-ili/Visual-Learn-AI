@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Visual Learn AI</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#eef2ff;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    color:#1e3a8a;
+}
+
+.top-bar{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+button{
+    padding:12px 25px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.voice{
+    background:#dbeafe;
+    color:#1e3a8a;
+    padding:10px;
+    border-radius:10px;
+    border-left:5px solid #2563eb;
+}
+
+img{
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    max-width:100%;
+}
+
+audio{
+    width:100%;
+}
+
+video{
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🎓 Visual Learn AI</h1>
+
+<div class="top-bar">
+
+<input type="file" id="fileInput">
+
+<button id="uploadBtn" type="button">
+Upload
+</button>
+
+</div>
+
+<div id="result">
+
+<div class="card">
+
+<h2>🚀 Welcome to Visual Learn AI</h2>
+
+<p>
+Upload a PPT, PDF, or TXT file and generate:
+</p>
+
+<ul>
+<li>📄 Extracted Content</li>
+<li>🖼️ AI Images</li>
+<li>🎤 Voice Narration</li>
+<li>🎬 Scene Videos</li>
+<li>📹 Final Learning Video</li>
+</ul>
+
+</div>
+
+</div>
+
+<script>
+
+const uploadBtn =
+document.getElementById("uploadBtn");
+
+const result =
+document.getElementById("result");
+
+uploadBtn.addEventListener(
+    "click",
+    async function(){
+
+        const file =
+        document.getElementById("fileInput").files[0];
+
+        if(!file){
+
+            alert("Please select a file");
+            return;
+        }
+
+        result.innerHTML =
+        "<div class='card'>⏳ Generating scenes and video...</div>";
+
+        const formData = new FormData();
+
+        formData.append(
+            "file",
+            file
+        );
+
+        try{
+
+            const response =
+            await fetch(
+                "http://127.0.0.1:5000/upload",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+            const data =
+            await response.json();
+
+            let html = "";
+
+            data.scenes.forEach(scene => {
+
+                html += `
+                <div class="card">
+
+                    <h2>🎬 Scene ${scene.scene}</h2>
+
+                    <h3>${scene.title}</h3>
+
+                    <p>${scene.subtitle}</p>
+
+                    <div class="voice">
+                        ${scene.voice_text}
+                    </div>
+
+                    <br>
+
+                    <img
+                        src="${scene.image_url}"
+                        width="400"
+                    >
+
+                    <br><br>
+
+                    <audio controls>
+                        <source
+                        src="http://127.0.0.1:5000/${scene.audio_file}"
+                        type="audio/mpeg">
+                    </audio>
+
+                </div>
+                `;
+            });
+
+            html += `
+            <div class="card">
+
+                <h2>🎬 Final Video</h2>
+
+                <video controls width="500">
+
+                    <source
+                    src="http://127.0.0.1:5000/video/final_video.mp4"
+                    type="video/mp4">
+
+                </video>
+
+                <br><br>
+
+                <a
+                href="http://127.0.0.1:5000/video/final_video.mp4"
+                download>
+
+                    <button>
+                        Download Final Video
+                    </button>
+
+                </a>
+
+            </div>
+            `;
+            
+
+            result.innerHTML = html;
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            result.innerHTML =
+            `
+            <div class="card">
+                Error:
+                ${error}
+            </div>
+            `;
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
